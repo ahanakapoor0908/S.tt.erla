@@ -329,29 +329,79 @@ function sendMessage(){
 };
 
 const quizBank = {
-  "Grammar":["1. Which of the following is a noun?","2. Identify the verb in the sentence.","3. What is an adjective?","4. Define adverb.","5. Choose the correct pronoun.","6. What is a clause?","7. What is a phrase?","8. Identify the subject.","9. Identify the predicate.","10. Which sentence is in past tense?"],
-  "Formal Letter":["1. Which salutation is correct for a formal letter?","2. Where does the date appear?","3. How many paragraphs in the body?","4. Correct closing of a formal letter?","5. Should slang be used?","6. What is the subject line?","7. How to address unknown recipient?","8. Where is sender’s address?","9. How to maintain formal tone?","10. Example of formal letter topic?"],
-  "Speech":["1. Opening sentence of speech should be?","2. How to conclude a speech?","3. How many body points needed?","4. Why is voice modulation important?","5. Should slang be used?","6. How to maintain eye contact?","7. Introduction content?","8. Conclusion content?","9. Role of pauses in speech?","10. How to engage audience?"],
-  "Prose":["1. Prose is written in?","2. Does prose contain verses?","3. Main elements of prose?","4. Difference between prose and poetry?","5. Importance of storyline?","6. Character roles?","7. Use of dialogues?","8. Purpose of prose?","9. Types of prose?","10. Example of prose?"],
-  "Algebra":["1. Solve x + 5 = 12","2. Factorize x^2 + 5x + 6","3. Simplify 2x + 3x","4. Solve 2x - 7 = 9","5. What is coefficient of x?","6. Identify constant term","7. Solve 3x + 2 = 11","8. Solve x^2 - 9 = 0","9. Expression for sum of two numbers?","10. Solve x/2 + 5 = 9"],
-  "Linear Equations":["1. Solve 2x + 3 = 7","2. Identify solution of x + y = 5","3. Graph line equation y = 2x + 1","4. Solve 3x - 4y = 12","5. Substitution method explanation","6. Elimination method example","7. Real-life use of linear eq","8. Difference between series & parallel eq?","9. Check solution of linear eq","10. Write linear eq in two variables"],
-  "Mensuration":["1. Area of rectangle formula?","2. Perimeter of square formula?","3. Volume of cube formula?","4. Surface area of cylinder formula?","5. Convert cm to m?","6. Area of triangle?","7. Circumference of circle?","8. Calculate volume of cone?","9. Difference between area and perimeter?","10. Units used in mensuration?"],
-  "Reproduction in Animals":["1. Types of reproduction?","2. Examples of asexual reproduction?","3. Sexual reproduction involves?","4. Male gamete called?","5. Female gamete called?","6. Fertilization occurs where?","7. Example of binary fission?","8. Budding example?","9. Development stages in human?","10. Difference sexual vs asexual?"],
-  "Sound":["1. What is sound?","2. Medium for sound propagation?","3. Speed of sound in air?","4. Echo is?","5. Frequency definition?","6. Pitch definition?","7. Amplitude definition?","8. Uses of sound?","9. Reflection of sound?","10. Absorption of sound?"],
-  "Electricity":["1. Define electric current","2. Ohm’s law formula?","3. Series circuit feature?","4. Parallel circuit feature?","5. Heating effect example?","6. Function of fuse?","7. Function of MCB?","8. Identify conductor?","9. Identify insulator?","10. Safety rules?"],
-  "1857 Revolt":["1. Year of revolt?","2. Key leader: Mangal Pandey?","3. Rani Lakshmi Bai role?","4. Nana Saheb role?","5. Causes of revolt?","6. Social cause example?","7. Political cause example?","8. Economic cause example?","9. Outcome of revolt?","10. Lessons learned?"],
-  "Resources":["1. Types of natural resources?","2. Renewable examples?","3. Non-renewable examples?","4. Importance of resources?","5. Conservation methods?","6. Effect of overuse?","7. Water conservation example?","8. Forest conservation example?","9. Sustainable use meaning?","10. Future generations importance?"],
-  "Judiciary":["1. Supreme Court role?","2. High Court role?","3. Lower court role?","4. Independent judiciary importance?","5. Judge role?","6. Protects rights how?","7. Constitution relation?","8. Civil vs criminal court?","9. Example of court decision?","10. Appeal meaning?"],
-  "Vyakaran":["1. Define Sandhi?","2. Define Samas?","3. Types of ling?","4. Vachan explained?","5. Purush explained?","6. Correct sentence formation?","7. Past tense example?","8. Future tense example?","9. Correct pronoun usage?","10. Correct adjective usage?"],
-  "Patra Lekhan":["1. Formal letter format?","2. Informal letter format?","3. Sender address position?","4. Receiver address position?","5. Subject line importance?","6. Correct salutation?","7. Body paragraph number?","8. Closing format?","9. Should language be polite?","10. Example topic?"],
-  "HTML":["1. Full form of HTML?","2. Tags vs elements?","3. Heading tag?","4. Paragraph tag?","5. Anchor tag?","6. Image tag?","7. Input tag?","8. Form tag?","9. Attributes examples?","10. HTML page structure?"],
-  "AI Basics":["1. Define AI?","2. Types of AI?","3. Narrow AI example?","4. General AI example?","5. Machine learning definition?","6. Deep learning meaning?","7. AI in healthcare?","8. AI in education?","9. AI in transport?","10. Benefits of AI?"],
-  "Shabd Roop":["1. What is shabd roop?","2. Singular example?","3. Dual example?","4. Plural example?","5. Gender change example?","6. Sentence usage?","7. Correct case usage?","8. Form for verbs?","9. Form for nouns?","10. Importance?"],
-  "Dhatu Roop":["1. Root verb example?","2. Present tense form?","3. Past tense form?","4. Future tense form?","5. Mood example?","6. Sentence usage?","7. Sanskrit literature usage?","8. Different conjugations?","9. Singular vs plural usage?","10. Importance?"],
-  "French Grammar":["1. French articles?","2. French nouns?","3. French adjectives?","4. Present tense verbs?","5. Past tense verbs?","6. Future tense verbs?","7. Sentence structure?","8. Polite phrases?","9. Culture vocabulary?","10. Example sentence?"],
-  "Culture":["1. French festivals?","2. French food?","3. French music?","4. Famous writers?","5. Famous artists?","6. Social norms?","7. Etiquette example?","8. Daily life culture?","9. Historical sites?","10. French lifestyle?"]
+  "Grammar":[
+    { q:"Which of the following is a noun?", options:["run","dog","quickly","beautiful"], answer:"dog" },
+    { q:"Identify the verb in the sentence.", options:["is","happy","table","red"], answer:"is" },
+    { q:"What is an adjective?", options:["A describing word","A doing word","A place","A person"], answer:"A describing word" },
+    { q:"Define adverb.", options:["Describes verb/adjective","Describes noun","Describes pronoun","Describes sentence"], answer:"Describes verb/adjective" },
+    { q:"Choose the correct pronoun.", options:["He","Running","Quick","Apple"], answer:"He" },
+    { q:"Identify the preposition.", options:["on","run","happy","dog"], answer:"on" },
+    { q:"Which is an interjection?", options:["Wow!","Run","Dog","Quickly"], answer:"Wow!" },
+    { q:"Identify the conjunction.", options:["and","or","but","All"], answer:"All" },
+    { q:"Which sentence is correct?", options:["She runs fast.","She run fast.","She running fast.","She runned fast."], answer:"She runs fast." },
+    { q:"Correct plural of 'child'?", options:["children","childs","childes","child"], answer:"children" }
+  ],
+  "Formal Letter":[
+    { q:"Which salutation is correct for a formal letter?", options:["Dear Sir","Hi buddy","Hey","Yo"], answer:"Dear Sir" },
+    { q:"Where does the date appear?", options:["Top right","Bottom left","Middle","Nowhere"], answer:"Top right" },
+    { q:"How many paragraphs in the body?", options:["3","2","5","1"], answer:"3" },
+    { q:"Correct closing of a formal letter?", options:["Yours sincerely","Bye","Cheers","Later"], answer:"Yours sincerely" },
+    { q:"Should slang be used?", options:["No","Yes","Sometimes","Only in intro"], answer:"No" },
+    { q:"Subject line should be?", options:["Brief & clear","Long & vague","Random","Optional"], answer:"Brief & clear" },
+    { q:"Sender's address appears?", options:["Top left","Bottom right","Middle","Nowhere"], answer:"Top left" },
+    { q:"Receiver's address appears?", options:["Below date","Top","End","Random"], answer:"Below date" },
+    { q:"Paragraph separation style?", options:["Single line spacing","Double spacing","No spacing","Random"], answer:"Single line spacing" },
+    { q:"Purpose of formal letter?", options:["Official communication","Story","Personal message","Joke"], answer:"Official communication" }
+  ],
+  "Speech":[
+    { q:"Opening sentence of speech should be?", options:["Attention grabber","Random word","Slang","Silent start"], answer:"Attention grabber" },
+    { q:"How to conclude a speech?", options:["Summarize & end memorably","Stop abruptly","Say random joke","Ignore"], answer:"Summarize & end memorably" },
+    { q:"How many body points needed?", options:["3-5","10","1","0"], answer:"3-5" },
+    { q:"Why is voice modulation important?", options:["Keeps audience engaged","Makes speech boring","No reason","Random"], answer:"Keeps audience engaged" },
+    { q:"Should slang be used?", options:["No","Yes","Sometimes","Depends on mood"], answer:"No" },
+    { q:"Ideal speech duration?", options:["2-5 min","30 min","1 hr","10 sec"], answer:"2-5 min" },
+    { q:"Use of anecdotes?", options:["Engage audience","Distract","Ignore","Confuse"], answer:"Engage audience" },
+    { q:"Gestures should be?", options:["Natural & relevant","Random","None","Exaggerated"], answer:"Natural & relevant" },
+    { q:"Eye contact importance?", options:["Builds connection","Not important","Avoid","Optional"], answer:"Builds connection" },
+    { q:"Language style?", options:["Simple & clear","Complex & confusing","Slang heavy","Random"], answer:"Simple & clear" }
+  ],
+  "Prose":[
+    { q:"Prose is written in?", options:["Ordinary grammatical structure","Verse form","Poetry","Haiku"], answer:"Ordinary grammatical structure" },
+    { q:"Does prose contain verses?", options:["No","Yes","Sometimes","Only poems"], answer:"No" },
+    { q:"Main elements of prose?", options:["Paragraphs, narrative","Rhyme, meter","Lyrics, rhyme","Haiku, tanka"], answer:"Paragraphs, narrative" },
+    { q:"Difference between prose and poetry?", options:["Prose uses sentences","Poetry uses sentences","Prose rhymes","Prose has stanzas"], answer:"Prose uses sentences" },
+    { q:"Importance of storyline?", options:["Conveys message","No importance","Random","Only style matters"], answer:"Conveys message" },
+    { q:"Character roles?", options:["Main and supporting","Only main","Only minor","None"], answer:"Main and supporting" },
+    { q:"Use of dialogues?", options:["Enhances realism","Avoided","Mandatory","Random"], answer:"Enhances realism" },
+    { q:"Purpose of prose?", options:["Inform, entertain, instruct","Only entertain","Only inform","None"], answer:"Inform, entertain, instruct" },
+    { q:"Types of prose?", options:["Short story, essay, novel","Poem, haiku, limerick","Song, anthem, rap","Ballad, lyric, epic"], answer:"Short story, essay, novel" },
+    { q:"Example of prose?", options:["Novel","Sonnet","Haiku","Rhyme"], answer:"Novel" }
+  ],
+  "Algebra":[
+    { q:"Solve x + 5 = 12", options:["x=7","x=17","x=5","x=12"], answer:"x=7" },
+    { q:"Factorize x^2 + 5x + 6", options:["(x+2)(x+3)","(x+1)(x+6)","(x+2)(x+2)","Cannot factor"], answer:"(x+2)(x+3)" },
+    { q:"Simplify 2x + 3x", options:["5x","6x","x","2x"], answer:"5x" },
+    { q:"Solve 2x - 7 = 9", options:["x=8","x=7","x=9","x=1"], answer:"x=8" },
+    { q:"Coefficient of x in 3x + 4?", options:["3","4","7","1"], answer:"3" },
+    { q:"Identify constant term in 3x + 5", options:["5","3","8","0"], answer:"5" },
+    { q:"Solve 3x + 2 = 11", options:["x=3","x=2","x=4","x=5"], answer:"x=3" },
+    { q:"Solve x^2 - 9 = 0", options:["x=3 or -3","x=9","x=0","x=1"], answer:"x=3 or -3" },
+    { q:"Expression for sum of two numbers a and b?", options:["a+b","a-b","ab","a*b"], answer:"a+b" },
+    { q:"Solve x/2 + 5 = 9", options:["x=8","x=7","x=9","x=10"], answer:"x=8" }
+  ],
+  "Linear Equations":[
+    { q:"Solve 2x + 3 = 7", options:["x=2","x=5","x=3","x=1"], answer:"x=2" },
+    { q:"Solution of x + y = 5 for x=2?", options:["y=3","y=2","y=5","y=1"], answer:"y=3" },
+    { q:"Graph line equation y = 2x + 1", options:["Straight line","Curve","Circle","Random"], answer:"Straight line" },
+    { q:"Solve 3x - 4y = 12 for x=4?", options:["y=0","y=1","y=2","y=3"], answer:"y=0" },
+    { q:"Substitution method involves?", options:["Replacing variable","Guessing","Adding numbers","Drawing"], answer:"Replacing variable" },
+    { q:"Elimination method example?", options:["Eliminate one variable","Guess answer","Use graph","Random"], answer:"Eliminate one variable" },
+    { q:"Real-life use of linear eq?", options:["Budgeting","Storytelling","Drawing","Music"], answer:"Budgeting" },
+    { q:"Difference between series & parallel eq?", options:["Series: same current; Parallel: same voltage","Same voltage both","Same current both","None"], answer:"Series: same current; Parallel: same voltage" },
+    { q:"Check solution of linear eq by?", options:["Substitution","Guessing","Random","Drawing"], answer:"Substitution" },
+    { q:"Write linear eq in two variables?", options:["ax+by=c","x+y+z=0","x^2+y^2=1","None"], answer:"ax+by=c" }
+  ]
 };
-
 const wsBank = {
   "Grammar":["1. Write 5 nouns.","2. Write 5 verbs.","3. Identify parts of speech in sentence.","4. Form 5 adverbs.","5. Write 3 complex sentences."],
   "Formal Letter":["1. Write a formal letter to principal requesting leave.","2. Draft letter to bank manager.","3. Compose letter to editor.","4. Draft letter for complaint.","5. Write letter to teacher."],
