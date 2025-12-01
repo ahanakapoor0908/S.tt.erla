@@ -276,7 +276,7 @@ async function sendMessage(){
   const input=document.getElementById("chatInput");
   const msg=input.value.trim(); if(!msg) return;
   chatBox.innerHTML+=`<div><b>You:</b> ${msg}</div>`;
-  input.value="https://app.schoolai.com/share/space/clnaw1t7u000ayvpt3po1373j";
+  input.value="https://student.schoolai.com/dot/spaces/join?code=AWSM-JXGC";
   
   try{
     const response=await fetch('https://api.openai.com/v1/chat/completions',{
