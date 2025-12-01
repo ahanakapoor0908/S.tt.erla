@@ -27,15 +27,21 @@ body{background:linear-gradient(135deg,#d9e6ff,#ffffff);overflow-x:hidden;font-s
 #loginBtn:hover{background:#1d3270;}
 
 /* ====== APP LAYOUT ====== */
-#appPage{display:none;width:100%;height:100%;display:flex;}
-.glass{background:rgba(255,255,255,0.35);backdrop-filter:blur(12px);border-radius:18px;border:1px solid rgba(255,255,255,0.4);box-shadow:0 4px 20px rgba(0,0,0,0.1);}
-#sidebar{width:260px;height:100vh;background:#1346b5c4;color:white;padding:25px;position:fixed;}
-#sidebar h2{font-size:26px;margin-bottom:25px;}
-.nav-btn{width:100%;padding:12px;margin:8px 0;background:rgba(255,255,255,0.2);border:none;border-radius:12px;text-align:left;color:white;cursor:pointer;font-size:16px;transition:0.3s;}
-.nav-btn:hover{background:rgba(255,255,255,0.35);}
-#main{margin-left:280px;padding:30px;width:calc(100% - 280px);}
-.page{display:none;}
-.active{display:block;}
+#appPage {
+  display: none;
+  width: 100%;
+  height: 100vh; /* full viewport height */
+  display: flex;
+  overflow: hidden; /* prevent extra scrolling */
+}
+
+#main {
+  margin-left: 280px;
+  padding: 30px;
+  width: calc(100% - 280px);
+  height: 100vh; /* full viewport height */
+  overflow-y: auto; /* scroll only inside main content if needed */
+}
 #welcomeBox{width:90%;padding:30px;margin-top:25px;display:flex;align-items:center;justify-content:space-between;}
 #welcomeBox img{width:160px;filter: invert(25%);}
 .subject-card{padding:18px;margin:12px;background:white;border-radius:15px;display:inline-block;cursor:pointer;width:150px;text-align:center;border:2px solid #1346b5;transition:0.3s;}
