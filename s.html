@@ -208,11 +208,13 @@ function doLogin(role){
     return;
   }
 
-  loginPage.style.display = "none";  // <-- THIS WILL FINALLY WORK
+  loginPage.style.display = "none";
   appPage.style.display = "flex";
   welcomeUser.innerText = "Welcome, " + name + " 👋";
-}
-  if(role==="teacher") document.querySelectorAll(".teacher-only").forEach(el=>el.style.display="block");
+
+  if(role === "teacher"){
+    document.querySelectorAll(".teacher-only").forEach(el => el.style.display = "block");
+  }
 }
 
 /* ===== DATA ===== */
