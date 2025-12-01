@@ -188,7 +188,8 @@ const subjectTopics = {
   "Hindi":["Vyakaran","Patra Lekhan"],
   "Computer":["HTML","AI Basics"],
   "Sanskrit":["Shabd Roop","Dhatu Roop"],
-  "French":["French Grammar","Culture"]
+  "French":["French Grammar","Culture"],
+  "ICT":["Networks","Cybersecurity"]
 };
 
 let chosenTopic="";
@@ -271,36 +272,39 @@ function loadWorksheet(){
   out.innerHTML=w.map(s=>`<p>${s}</p>`).join("");
 }
 
-/* ===== AI CHAT ===== */
-async function sendMessage(){
+/* ===== AI CHAT LOCAL EXPLANATION ===== */
+function sendMessage(){
   const input=document.getElementById("chatInput");
   const msg=input.value.trim(); if(!msg) return;
   chatBox.innerHTML+=`<div><b>You:</b> ${msg}</div>`;
-  input.value="https://student.schoolai.com/dot/spaces/join?code=AWSM-JXGC";
-  
-  try{
-    const response=await fetch('https://api.openai.com/v1/chat/completions',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'Authorization':'Bearer YOUR_OPENAI_API_KEY'
-      },
-      body:JSON.stringify({
-        model:"gpt-4",
-        messages:[{role:"user", content:msg}]
-      })
-    });
-    const data=await response.json();
-    const reply=data.choices[0].message.content;
-    chatBox.innerHTML+=`<div><b>AI:</b> ${reply}</div>`;
-    chatBox.scrollTop=chatBox.scrollHeight;
-  }catch(err){
-    chatBox.innerHTML+=`<div><b>AI:</b> Error connecting to AI service.</div>`;
-  }
+  input.value="";
+
+  let reply="Sorry, I don't have information on that.";
+
+  if(chosenTopic){
+    const mmData = mmBank[chosenTopic];
+    const wsData = wsBank[chosenTopic];
+    if(/mindmap|explain|overview/i.test(msg)){
+      if(mmData) reply = mmData.join(" ");
+      else reply="Mindmap not available.";
+    } else if(/worksheet|exercise|practice/i.test(msg)){
+      if(wsData) reply = wsData.join(" ");
+      else reply="Worksheet not available.";
+    } else if(/quiz|question|answer/i.test(msg)){
+      if(quizBank[chosenTopic]){
+        reply="Try reviewing the topic points and quiz carefully. Focus on the main ideas.";
+      } else reply="Quiz not available.";
+    } else {
+      reply = mmData? mmData.join(" ") : "Here is some info on the topic.";
+    }
+  } else reply="Select a topic first to get explanations.";
+
+  chatBox.innerHTML+=`<div><b>AI:</b> ${reply}</div>`;
+  chatBox.scrollTop=chatBox.scrollHeight;
 }
 
-/* ===== DATA BANKS (mmBank, quizBank, wsBank) ===== *//* ===================== MINDMAP, QUIZ, WORKSHEET DATA ===================== */
-const mmBank = {
+/* ===== DATA BANKS (mmBank, quizBank, wsBank) ===== */
+
   "Grammar":["Grammar is the structure and system of a language.","Includes parts of speech: nouns, pronouns, verbs, adjectives, adverbs.","Sentence structure: subject, predicate, clauses.","Tenses show the time of action.","Punctuation ensures clarity in writing."],
   "Formal Letter":["Written for official purposes.","Format: Sender’s address → Date → Receiver’s address → Subject → Salutation.","Body has 3 paragraphs: introduction, details, conclusion.","Formal tone, no slang.","Ends with 'Yours sincerely' + name."],
   "Speech":["A spoken expression delivered to an audience.","Structure: introduction, body points, conclusion.","Use clear language and strong opening.","Maintain eye contact & voice modulation.","Ends with a memorable closing statement."],
@@ -370,6 +374,7 @@ const wsBank = {
   "Dhatu Roop":["1. Write root verb forms","2. Present tense of verb","3. Past tense of verb","4. Future tense of verb","5. Make simple sentences using verb."],
   "French Grammar":["1. Write 5 nouns","2. Write 5 adjectives","3. Conjugate 3 verbs","4. Form simple sentences","5. Translate English sentences."],
   "Culture":["1. List French festivals","2. Describe French food","3. Famous French musicians","4. Write about social etiquette","5. Daily life in France."]
-};</script>
+};
+</script>
 </body>
 </html>
