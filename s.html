@@ -190,27 +190,28 @@ body{
 
 <script>
 /* ===== SELECT ELEMENTS ===== */
-const studentLogin = document.getElementById("studentLogin");
-const teacherLogin = document.getElementById("teacherLogin");
+// ====== FIX: Get all elements before using them ======
 const loginPage = document.getElementById("loginPage");
 const appPage = document.getElementById("appPage");
+const studentLogin = document.getElementById("studentLogin");
+const teacherLogin = document.getElementById("teacherLogin");
 const welcomeUser = document.getElementById("welcomeUser");
-const subjectsQuick = document.getElementById("subjectsQuick");
 
 /* ===== LOGIN ===== */
 studentLogin.onclick = () => doLogin("student");
 teacherLogin.onclick = () => doLogin("teacher");
 
 function doLogin(role){
-  const name = document.getElementById("username").value || prompt("Enter your name:");
-  if(!name){ alert("Name is required"); return; }
-  localStorage.setItem("sterlaUser", name);
-  localStorage.setItem("sterlaRole", role);
-  // show/hide pages
-  loginPage.style.display = "none";
+  const name = document.getElementById("username").value;
+  if(!name){ 
+    alert("Enter name");
+    return;
+  }
+
+  loginPage.style.display = "none";  // <-- THIS WILL FINALLY WORK
   appPage.style.display = "flex";
-  showPage("homePage");
   welcomeUser.innerText = "Welcome, " + name + " 👋";
+}
   if(role==="teacher") document.querySelectorAll(".teacher-only").forEach(el=>el.style.display="block");
 }
 
