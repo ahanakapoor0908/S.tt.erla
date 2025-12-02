@@ -351,16 +351,78 @@ const flowData = {
 function loadFlowchart() {
     const topic = document.getElementById("mmTopic").value;
     const area = document.getElementById("flowArea");
-    const svg = document.getElementById("flowSVG");
 
-    area.innerHTML = `<svg id="flowSVG" width="2000" height="2000" style="position:absolute; top:0; left:0;"></svg>`;
-    
     if (!topic) {
         area.innerHTML = "Select a topic first!";
         return;
-    =	q	1
-}
+    }
 
+    const steps = flowData[topic];
+    area.innerHTML = `
+        <svg id="flowSVG" width="2000" height="2000" style="position:absolute; top:0; left:0;"></svg>
+    `;
+
+    const svg = document.getElementById("flowSVG");
+
+    const startX = 200;
+    let startY = 50;
+    const boxWidth = 180;
+    const boxHeight = 60;
+    const gap = 120;
+
+    steps.forEach((text, i) => {
+        // Draw box
+        const box = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        box.setAttribute("x", startX);
+        box.setAttribute("y", startY);
+        box.setAttribute("width", boxWidth);
+        box.setAttribute("height", boxHeight);
+        box.setAttribute("rx", "12");
+        box.setAttribute("fill", "white");
+        box.setAttribute("stroke", "#1445b5");
+        box.setAttribute("stroke-width", "3");
+        svg.appendChild(box);
+
+        // Add text
+        const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        label.setAttribute("x", startX + boxWidth / 2);
+        label.setAttribute("y", startY + boxHeight / 2 + 5);
+        label.setAttribute("font-size", "16");
+        label.setAttribute("font-family", "Poppins");
+        label.setAttribute("font-weight", "600");
+        label.setAttribute("text-anchor", "middle");
+        label.textContent = text;
+        svg.appendChild(label);
+
+        // Draw arrow to next box
+        if (i < steps.length - 1) {
+            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", startX + boxWidth / 2);
+            line.setAttribute("y1", startY + boxHeight);
+            line.setAttribute("x2", startX + boxWidth / 2);
+            line.setAttribute("y2", startY + boxHeight + 50);
+            line.setAttribute("stroke", "#1445b5");
+            line.setAttribute("stroke-width", "3");
+            svg.appendChild(line);
+
+            // Arrowhead
+            const arrow = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+            arrow.setAttribute(
+                "points",
+                `${startX + boxWidth / 2 - 8},${startY + boxHeight + 50}
+                 ${startX + boxWidth / 2 + 8},${startY + boxHeight + 50}
+                 ${startX + boxWidth / 2},${startY + boxHeight + 65}`
+            );
+            arrow.setAttribute("fill", "#1445b5");
+            svg.appendChild(arrow);
+        }
+
+        startY += gap;
+    });
+
+    // Auto-resize SVG height
+    svg.setAttribute("height", startY + 100);
+}
 /* ===== QUIZ BANK (Multiple Choice) ===== */
 const quizBank = {
   "Grammar":[
