@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+(<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -16,20 +16,38 @@ body{
 
 /* ====== LOGIN PAGE ====== */
 #loginPage{width:100vw;height:100vh;display:flex;justify-content:center;align-items:center;padding:30px;}
-.login-container{width:80%;height:80%;background:rgba(255,255,255,0.4);backdrop-filter:blur(15px);border-radius:25px;display:flex;box-shadow:0 8px 20px rgba(0,0,0,0.15);}
-.login-left{flex:1;background:#e8f0ff;border-radius:25px 0 0 25px;padding:40px;display:flex;flex-direction:column;justify-content:center;align-items:center;position:relative;overflow:hidden;}
-.doodle{position:absolute;opacity:0.15;width:140px;}
-#pencil{top:20px;left:30px;transform:rotate(-15deg);}
-#book{bottom:30px;right:40px;transform:rotate(10deg);}
-#star{top:40%;left:45%;}
-.logo-title{font-size:48px;font-weight:800;color:#2b4b9b;text-shadow:0 2px 6px rgba(0,0,0,0.15);}
-.logo-sub{font-size:20px;color:#5370c9;margin-top:10px;text-align:center;}
-.login-right{flex:1;padding:50px;display:flex;flex-direction:column;justify-content:center;}
-.login-right h2{font-size:32px;font-weight:700;color:#2b4b9b;margin-bottom:20px;}
-.inputBox{margin:15px 0;}
-.inputBox input,.inputBox select{width:100%;padding:15px;border-radius:12px;border:1px solid #9bb2ff;background:rgba(255,255,255,0.6);}
-#loginBtn{margin-top:20px;width:100%;padding:16px;border:none;border-radius:12px;font-size:18px;background:#2b4b9b;color:white;cursor:pointer;transition:0.3s;}
-#loginBtn:hover{background:#1d3270;}
+.login-container {
+    width: 300px;
+    margin: 120px auto;
+    padding: 25px;
+    border-radius: 10px;
+    background: #fafafa;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.login-container input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: 1px solid #888;
+}
+
+.login-container button {
+    padding: 10px 40px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 8px;
+    background: #1976d2;
+    color: white;
+    cursor: pointer;
+}
+
+#loginMessage {
+    margin-top: 10px;
+    font-size: 14px;
+}
 
 /* ====== APP LAYOUT ====== */
 #appPage{
@@ -102,6 +120,15 @@ body{
 <!-- LOGIN PAGE -->
 <div id="loginPage">
   <div class="login-container">
+    <div class="login-container">
+    <h2>Login</h2>
+
+    <input type="text" id="username" placeholder="Enter Username">
+    <input type="password" id="password" placeholder="Enter Password">
+
+    <button onclick="login()">Login</button>
+    <p id="loginMessage"></p>
+</div>
     <div class="login-left">
       <img src="https://cdn-icons-png.flaticon.com/512/2942/2942789.png" class="doodle" id="pencil">
       <img src="https://cdn-icons-png.flaticon.com/512/2232/2232688.png" class="doodle" id="book">
@@ -238,6 +265,29 @@ const teacherLogin = document.getElementById("teacherLogin");
 const welcomeUser = document.getElementById("welcomeUser");
 
 /* ===== LOGIN ===== */
+function login() {
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const msg = document.getElementById("loginMessage");
+
+    if (username === "" || password === "") {
+        msg.textContent = "Please enter both username and password.";
+        msg.style.color = "red";
+        return;
+    }
+
+    if (username === "admin" && password === "1234") {
+        msg.textContent = "Login successful!";
+        msg.style.color = "green";
+
+        setTimeout(() => {
+            window.location.href = "home.html"; // redirect page
+        }, 800);
+    } else {
+        msg.textContent = "Invalid credentials. Try again.";
+        msg.style.color = "red";
+    }
+}
 studentLogin.onclick = () => doLogin("student");
 teacherLogin.onclick = () => doLogin("teacher");
 
@@ -348,80 +398,56 @@ const flowData = {
     ]
 };
 
-function loadFlowchart() {
-    const topic = document.getElementById("mmTopic").value;
-    const area = document.getElementById("flowArea");
+function loadFlowchart(key) {
+    const data = flowData[key];
 
-    if (!topic) {
-        area.innerHTML = "Select a topic first!";
-        return;
-    }
+    // Clear previous diagram
+    svgContainer.innerHTML = "";
+    diagramTitle.textContent = data.title;
 
-    const steps = flowData[topic];
-    area.innerHTML = `
-        <svg id="flowSVG" width="2000" height="2000" style="position:absolute; top:0; left:0;"></svg>
-    `;
-
-    const svg = document.getElementById("flowSVG");
-
+    // Styling & spacing
+    const boxWidth = 250;
+    const boxHeight = 70;
+    const verticalGap = 60;
     const startX = 200;
-    let startY = 50;
-    const boxWidth = 180;
-    const boxHeight = 60;
-    const gap = 120;
 
-    steps.forEach((text, i) => {
-        // Draw box
+    data.points.forEach((text, index) => {
+        const y = index * (boxHeight + verticalGap) + 20;
+
+        // BOX
         const box = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         box.setAttribute("x", startX);
-        box.setAttribute("y", startY);
+        box.setAttribute("y", y);
         box.setAttribute("width", boxWidth);
         box.setAttribute("height", boxHeight);
-        box.setAttribute("rx", "12");
-        box.setAttribute("fill", "white");
-        box.setAttribute("stroke", "#1445b5");
-        box.setAttribute("stroke-width", "3");
-        svg.appendChild(box);
+        box.setAttribute("fill", "#bbdefb");
+        box.setAttribute("stroke", "#0d47a1");
+        box.setAttribute("rx", 10);
+        svgContainer.appendChild(box);
 
-        // Add text
+        // TEXT
         const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        label.setAttribute("x", startX + boxWidth / 2);
-        label.setAttribute("y", startY + boxHeight / 2 + 5);
-        label.setAttribute("font-size", "16");
-        label.setAttribute("font-family", "Poppins");
-        label.setAttribute("font-weight", "600");
-        label.setAttribute("text-anchor", "middle");
         label.textContent = text;
-        svg.appendChild(label);
+        label.setAttribute("x", startX + boxWidth / 2);
+        label.setAttribute("y", y + boxHeight / 2 + 5);
+        label.setAttribute("text-anchor", "middle");
+        label.setAttribute("font-size", "14");
+        label.setAttribute("font-family", "Arial");
+        svgContainer.appendChild(label);
 
-        // Draw arrow to next box
-        if (i < steps.length - 1) {
+        // ARROW (except last box)
+        if (index < data.points.length - 1) {
             const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
             line.setAttribute("x1", startX + boxWidth / 2);
-            line.setAttribute("y1", startY + boxHeight);
+            line.setAttribute("y1", y + boxHeight);
             line.setAttribute("x2", startX + boxWidth / 2);
-            line.setAttribute("y2", startY + boxHeight + 50);
-            line.setAttribute("stroke", "#1445b5");
-            line.setAttribute("stroke-width", "3");
-            svg.appendChild(line);
-
-            // Arrowhead
-            const arrow = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-            arrow.setAttribute(
-                "points",
-                `${startX + boxWidth / 2 - 8},${startY + boxHeight + 50}
-                 ${startX + boxWidth / 2 + 8},${startY + boxHeight + 50}
-                 ${startX + boxWidth / 2},${startY + boxHeight + 65}`
-            );
-            arrow.setAttribute("fill", "#1445b5");
-            svg.appendChild(arrow);
+            line.setAttribute("y2", y + boxHeight + verticalGap - 20);
+            line.setAttribute("stroke", "black");
+            line.setAttribute("marker-end", "url(#arrow)");
+            svgContainer.appendChild(line);
         }
-
-        startY += gap;
     });
-
-    // Auto-resize SVG height
-    svg.setAttribute("height", startY + 100);
+}
 }
 /* ===== QUIZ BANK (Multiple Choice) ===== */
 const quizBank = {
