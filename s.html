@@ -59,24 +59,24 @@ body{
 
 /* ====== MINDMAP BUBBLES ====== */
 .mindmap{display:flex;flex-wrap:wrap;justify-content:center;gap:20px;padding:20px;min-height:300px;position:relative;}
-.mm-bubble{background:#1346b5;color:white;padding:15px 25px;border-radius:50%;text-align:center;cursor:pointer;transition:0.3s;min-width:120px;min-height:120px;display:flex;align-items:center;justify-content:center;}
-.mm-bubble:hover{transform:scale(1.06);background:#1d3270;}
+.mm-bubble {
+  background:#ffffff;
+  padding:20px;
+  border-radius:50%;
+  box-shadow:0 4px 10px rgba(0,0,0,0.1);
+  position:absolute;
+  text-align:center;
+}
 
 /* ====== MINDMAP ARROWS ====== */
+
 .mm-line {
-  position:absolute;
-  width:2px;
-  background:#1346b5;
-  transform-origin:top left;
+  stroke:#1346b5;
+  stroke-width:2.5;
 }
 
 .mm-arrow {
-  position:absolute;
-  width: 0; 
-  height: 0; 
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 10px solid #1346b5;
+  fill:#1346b5;
 }
 
 /* ====== CHATBOX ====== */
@@ -175,7 +175,22 @@ body{
       <h1>Mind Map</h1>
       <div class="mindmap" id="mmOutput"></div>
     </div>
+<div id="mindmap" class="page">
+    <h2>Mindmap Generator</h2>
 
+    <select id="mmTopic">
+        <option value="">Choose topic</option>
+        <!-- your subjects -->
+    </select>
+
+    <button onclick="loadMindmap()">Generate Mindmap</button>
+
+    <!-- ⭐ PASTE HERE ⭐ -->
+    <div id="mmOutput" style="width:100%; height:500px; position:relative; margin-top:20px; border:1px solid #ccc; border-radius:10px; background:#fff;">
+        <svg id="mmSVG" width="100%" height="100%" style="position:absolute; top:0; left:0;"></svg>
+    </div>
+    <!-- ⭐ END ⭐ -->
+</div>
     <!-- QUIZ -->
     <div id="quizPage" class="page">
       <h1>Quiz</h1>
@@ -301,30 +316,86 @@ function setTopic(tp){
 
 /* ===== MINDMAP ===== */
 function loadMindmap(){
-  const out=document.getElementById("mmOutput");
-  out.innerHTML="";
-  out.style.position="relative";
+  const out = document.getElementById("mmOutput");
+  const svg = document.getElementById("mmSVG");
+  
+  out.innerHTML = `
+    <svg id="mmSVG" width="100%" height="100%" style="position:absolute; top:0; left:0;"></svg>
+  `;
+  
+  out.style.position = "relative";
 
-  if(!chosenTopic){ out.innerHTML="Select a topic first!"; return; }
+  if(!chosenTopic){
+    out.innerHTML = "Select a topic first!";
+    return;
+  }
 
-  const mmData=mmBank[chosenTopic];
-  if(!mmData){ out.innerHTML="Mindmap not available."; return; }
+  const mmData = mmBank[chosenTopic];
+  if(!mmData){
+    out.innerHTML = "Mindmap not available.";
+    return;
+  }
 
-  // central bubble
+  const svgEl = document.getElementById("mmSVG");
+
+  // ---- CENTRAL BUBBLE ----
   const center = document.createElement("div");
-  center.className="mm-bubble";
-  center.style.minWidth="160px";
-  center.style.minHeight="160px";
-  center.style.fontWeight="700";
-  center.innerText=chosenTopic;
-  center.style.position="absolute";
-  center.style.left="50%";
-  center.style.top="50%";
-  center.style.transform="translate(-50%, -50%)";
+  center.className = "mm-bubble";
+  center.innerText = chosenTopic;
+  center.style.left = "50%";
+  center.style.top  = "50%";
+  center.style.transform = "translate(-50%, -50%)";
   out.appendChild(center);
 
-  const centerRect = () => center.getBoundingClientRect();
-  const parentRect = () => out.getBoundingClientRect();
+  // AFTER center is in DOM → measure
+  const centerRect = center.getBoundingClientRect();
+  const parentRect = out.getBoundingClientRect();
+  
+  const cx = centerRect.left - parentRect.left + centerRect.width/2;
+  const cy = centerRect.top  - parentRect.top  + centerRect.height/2;
+  
+  const radius = 180;
+
+  mmData.forEach((sub, i)=>{
+    const angle = (i / mmData.length) * (2 * Math.PI);
+
+    const bx = cx + radius * Math.cos(angle);
+    const by = cy + radius * Math.sin(angle);
+
+    // ---- BUBBLE ----
+    const b = document.createElement("div");
+    b.className = "mm-bubble";
+    b.innerText = sub;
+    b.style.left = (bx - 50) + "px";
+    b.style.top  = (by - 50) + "px";
+    out.appendChild(b);
+
+    // ---- STRAIGHT LINE ----
+    const line = document.createElementNS("http://www.w3.org/2000/svg","line");
+    line.setAttribute("x1", cx);
+    line.setAttribute("y1", cy);
+    line.setAttribute("x2", bx);
+    line.setAttribute("y2", by);
+    line.setAttribute("class","mm-line");
+    svgEl.appendChild(line);
+
+    // ---- ARROW HEAD ----
+    const arrow = document.createElementNS("http://www.w3.org/2000/svg","polygon");
+
+    const angleDeg = Math.atan2(by - cy, bx - cx);
+
+    const ahx = bx - 10 * Math.cos(angleDeg - Math.PI/6);
+    const ahy = by - 10 * Math.sin(angleDeg - Math.PI/6);
+
+    const bhx = bx - 10 * Math.cos(angleDeg + Math.PI/6);
+    const bhy = by - 10 * Math.sin(angleDeg + Math.PI/6);
+
+    arrow.setAttribute("points", `${bx},${by} ${ahx},${ahy} ${bhx},${bhy}`);
+    arrow.setAttribute("class","mm-arrow");
+    
+    svgEl.appendChild(arrow);
+  });
+}
 
   // Place surrounding bubbles + arrows
   const radius = 180;
